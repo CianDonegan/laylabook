@@ -7,6 +7,11 @@ export default async function handler(req, res) {
 
   const { to, message } = req.body
 
+  console.log('ACCOUNT SID:', accountSid ? accountSid.slice(0, 6) + '...' : 'MISSING')
+  console.log('AUTH TOKEN:', authToken ? authToken.slice(0, 6) + '...' : 'MISSING')
+  console.log('FROM NUMBER:', fromNumber || 'MISSING')
+  console.log('TO:', to)
+
   const credentials = Buffer.from(`${accountSid}:${authToken}`).toString('base64')
 
   const response = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`, {
@@ -19,6 +24,7 @@ export default async function handler(req, res) {
   })
 
   const data = await response.json()
+  console.log('TWILIO RESPONSE:', JSON.stringify(data))
 
   if (data.error_code) {
     return res.status(400).json({ error: data.message })
