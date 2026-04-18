@@ -51,9 +51,17 @@ export default function BookingPage() {
       })
   }, [selectedDate, selectedService])
 
+  const [blockedDates, setBlockedDates] = useState([])
+
+  useEffect(() => {
+    supabase.from('blocked_times').select('date').then(({ data }) => {
+      setBlockedDates((data || []).map(b => b.date))
+    })
+  }, [])
+
   const isDateBlocked = (dateStr) => {
     const day = new Date(dateStr).getDay()
-    return BLOCKED_DAYS.includes(day)
+    return BLOCKED_DAYS.includes(day) || blockedDates.includes(dateStr)
   }
 
   const getTodayString = () => new Date().toISOString().split('T')[0]

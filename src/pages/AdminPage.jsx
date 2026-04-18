@@ -55,6 +55,65 @@ function PinScreen({ onSuccess }) {
   )
 }
 
+function BlockedDaysManager() {
+  const [blockedDates, setBlockedDates] = useState([])
+  const [newDate, setNewDate] = useState('')
+  const [reason, setReason] = useState('')
+
+  const fetchBlocked = async () => {
+    const { data } = await supabase.from('blocked_times').select('*').order('date')
+    setBlockedDates(data || [])
+  }
+
+  useEffect(() => { fetchBlocked() }, [])
+
+  const addBlock = async () => {
+    if (!newDate) return
+    await supabase.from('blocked_times').insert({ date: newDate, reason })
+    setNewDate('')
+    setReason('')
+    fetchBlocked()
+  }
+
+  const removeBlock = async (id) => {
+    await supabase.from('blocked_times').delete().eq('id', id)
+    fetchBlocked()
+  }
+
+  return (
+    <div className="bg-white rounded-2xl p-5 shadow-sm mb-6">
+      <h2 className="font-semibold text-gray-700 mb-4">Block a day off</h2>
+      <div className="flex gap-2 mb-3">
+        <input type="date" value={newDate}
+          onChange={e => setNewDate(e.target.value)}
+          className="flex-1 border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-pink-400"
+        />
+        <input placeholder="Reason (optional)" value={reason}
+          onChange={e => setReason(e.target.value)}
+          className="flex-1 border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-pink-400"
+        />
+        <button onClick={addBlock}
+          className="bg-pink-400 hover:bg-pink-500 text-white px-4 py-2 rounded-xl text-sm font-medium transition-all">
+          Block
+        </button>
+      </div>
+      {blockedDates.length > 0 && (
+        <div className="grid gap-2">
+          {blockedDates.map(b => (
+            <div key={b.id} className="flex justify-between items-center bg-gray-50 rounded-xl px-4 py-2 text-sm">
+              <span className="text-gray-700">{b.date}{b.reason ? ` — ${b.reason}` : ''}</span>
+              <button onClick={() => removeBlock(b.id)}
+                className="text-red-400 hover:text-red-600 text-xs font-medium">
+                Remove
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function AdminPage() {
   const [authed, setAuthed] = useState(() => sessionStorage.getItem('admin_authed') === 'true')
   const [bookings, setBookings] = useState([])
@@ -115,6 +174,7 @@ export default function AdminPage() {
           <p className="text-gray-400 text-sm mt-1">Manage your bookings</p>
         </div>
 
+        <BlockedDaysManager />
         <div className="flex gap-2 mb-6">
           {['pending', 'confirmed', 'cancelled'].map(s => (
             <button key={s}
