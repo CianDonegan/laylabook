@@ -137,12 +137,13 @@ export default function BookingPage() {
 
   return (
     <div className="min-h-screen" style={{background: BRAND.bg}}>
-      <div className="max-w-lg mx-auto px-4 pb-12">
+      <div className="max-w-2xl mx-auto px-4 pb-12">
 
         {/* Hero */}
         <div className="text-center pt-10 pb-8">
           <img src="/laylalogo.jpg" alt="Beauty by Layla" className="w-44 mx-auto mb-4" />
         </div>
+        
 {/* Policy modal */}
 {!policyAccepted && (
   <div className="bg-white rounded-3xl shadow-sm overflow-hidden mb-6">
