@@ -17,22 +17,21 @@ function formatDate(datetimeStr) {
   return new Date(datetimeStr).toLocaleDateString('en-IE', { weekday: 'short', day: 'numeric', month: 'short' })
 }
 
-export default function AdminPage() {
-  const [authed, setAuthed] = useState(() => sessionStorage.getItem('admin_authed') === 'true')
+function PinScreen({ onSuccess }) {
   const [pin, setPin] = useState('')
   const [error, setError] = useState(false)
 
   const handlePin = () => {
     if (pin === ADMIN_PIN) {
       sessionStorage.setItem('admin_authed', 'true')
-      setAuthed(true)
+      onSuccess()
     } else {
       setError(true)
       setPin('')
     }
   }
 
-  if (!authed) return (
+  return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
       <div className="bg-white rounded-2xl p-8 max-w-sm w-full shadow-sm text-center">
         <div className="text-3xl mb-4">🔒</div>
@@ -54,8 +53,14 @@ export default function AdminPage() {
       </div>
     </div>
   )
+}
 
+export default function AdminPage() {
+  const [authed, setAuthed] = useState(() => sessionStorage.getItem('admin_authed') === 'true')
   const [bookings, setBookings] = useState([])
+  const [filter, setFilter] = useState('pending')
+  const [loading, setLoading] = useState(true)
+
   const fetchBookings = async () => {
     setLoading(true)
     const { data } = await supabase
@@ -69,47 +74,47 @@ export default function AdminPage() {
 
   useEffect(() => { fetchBookings() }, [filter])
 
- const sendSMS = async (phone, message) => {
-  await fetch('/api/send-sms', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ to: phone, message })
-  })
-}
-
-const updateStatus = async (id, status) => {
-  const booking = bookings.find(b => b.id === id)
-  await supabase.from('bookings').update({ status }).eq('id', id)
-
-  if (status === 'confirmed') {
-    const date = formatDate(booking.start_time)
-    const time = formatTime(booking.start_time)
-    await sendSMS(
-      booking.client_phone,
-      `Hi ${booking.client_name}! Your appointment for ${booking.services?.name} on ${date} at ${time} is confirmed. See you then! 💅`
-    )
+  const sendSMS = async (phone, message) => {
+    await fetch('/api/send-sms', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ to: phone, message })
+    })
   }
 
-  if (status === 'cancelled') {
-    await sendSMS(
-      booking.client_phone,
-      `Hi ${booking.client_name}, unfortunately we can't accommodate your booking for ${booking.services?.name}. Please contact us to rebook.`
-    )
+  const updateStatus = async (id, status) => {
+    const booking = bookings.find(b => b.id === id)
+    await supabase.from('bookings').update({ status }).eq('id', id)
+
+    if (status === 'confirmed') {
+      const date = formatDate(booking.start_time)
+      const time = formatTime(booking.start_time)
+      await sendSMS(
+        booking.client_phone,
+        `Hi ${booking.client_name}! Your appointment for ${booking.services?.name} on ${date} at ${time} is confirmed. See you then! 💅`
+      )
+    }
+
+    if (status === 'cancelled') {
+      await sendSMS(
+        booking.client_phone,
+        `Hi ${booking.client_name}, unfortunately we can't accommodate your booking for ${booking.services?.name}. Please contact us to rebook.`
+      )
+    }
+
+    fetchBookings()
   }
 
-  fetchBookings()
-}
+  if (!authed) return <PinScreen onSuccess={() => setAuthed(true)} />
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-2xl mx-auto">
-
         <div className="text-center py-8">
           <h1 className="text-2xl font-semibold text-gray-800">Layla's Dashboard</h1>
           <p className="text-gray-400 text-sm mt-1">Manage your bookings</p>
         </div>
 
-        {/* Filter tabs */}
         <div className="flex gap-2 mb-6">
           {['pending', 'confirmed', 'cancelled'].map(s => (
             <button key={s}
@@ -122,7 +127,6 @@ const updateStatus = async (id, status) => {
           ))}
         </div>
 
-        {/* Bookings list */}
         {loading ? (
           <div className="text-center text-gray-400 py-12">Loading...</div>
         ) : bookings.length === 0 ? (
