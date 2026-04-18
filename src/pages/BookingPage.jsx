@@ -141,7 +141,7 @@ export default function BookingPage() {
 
         {/* Hero */}
         <div className="text-center pt-10 pb-8">
-          <img src="/logo.jpg" alt="Beauty by Layla" className="w-44 mx-auto mb-4" />
+          <img src="/laylalogo.jpg" alt="Beauty by Layla" className="w-44 mx-auto mb-4" />
           <p className="text-sm leading-relaxed mx-auto max-w-xs" style={{color: BRAND.muted}}>
             Makeup, nails, and all things beauty — Dublin. Est. 2022.
           </p>
