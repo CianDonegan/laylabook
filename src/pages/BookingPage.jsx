@@ -151,12 +151,16 @@ export default function BookingPage() {
               <h2 className="text-base font-medium mb-4" style={{color: BRAND.text}}>Booking Policy</h2>
               <div className="space-y-3 text-sm mb-5" style={{color: BRAND.muted}}>
                 {[
-                  ['Payment', 'Cash only. Please bring exact change.'],
-                  ['Cancellations', '24 hours notice required for all cancellations.'],
-                  ['Punctuality', 'Late arrivals over 10 mins may result in a shortened service or rescheduling.'],
-                  ['No-Shows', 'Clients who do not attend without notice will be unable to book future appointments.'],
-                  ['Patch Testing', 'Required for waxing and tinting services — please schedule in advance.'],
-                  ['Location', 'Clondalkin, D22. Text when you arrive and I\'ll come to bring you in.'],
+                    ['Payment', 'Cash only. Please bring exact change.'],
+                    ['Refills', 'Refills over other artists\' nails or lash work are not offered.'],
+                    ['Punctuality', 'Late arrivals over 10 mins may result in a shortened service or rescheduling.'],
+                    ['Cancellations', '24 hours notice required for all cancellations.'],
+                    ['Confirmations', 'A confirmation text will be sent to you within 24 hours of your booking, if not please contact me.'],
+                    ['No-Shows', 'Clients who do not attend without notice will be unable to book future appointments.'],
+                    ['Patch Testing', 'Required for waxing and tinting services — please schedule in advance.'],
+                    ['Media Consent', 'Photos or videos taken during your appointment may be posted to social media. Please let me know if you do not consent.'],
+                    ['Location', 'Clondalkin, D22.'],
+                    ['Entry protocol', 'Please send a message when you are outside and i will come let you in.']
                 ].map(([title, text]) => (
                   <div key={title} className="flex gap-3">
                     <span className="font-medium shrink-0" style={{color: BRAND.text}}>{title}</span>
