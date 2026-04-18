@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 
+import { useState, useEffect } from 'react'
+import { supabase } from '../lib/supabase'
+
+const ADMIN_PIN = import.meta.env.VITE_ADMIN_PIN
+
 const STATUS_COLORS = {
   pending: 'bg-yellow-100 text-yellow-700',
   confirmed: 'bg-green-100 text-green-700',
@@ -16,10 +21,44 @@ function formatDate(datetimeStr) {
 }
 
 export default function AdminPage() {
-  const [bookings, setBookings] = useState([])
-  const [filter, setFilter] = useState('pending')
-  const [loading, setLoading] = useState(true)
+  const [authed, setAuthed] = useState(() => sessionStorage.getItem('admin_authed') === 'true')
+  const [pin, setPin] = useState('')
+  const [error, setError] = useState(false)
 
+  const handlePin = () => {
+    if (pin === ADMIN_PIN) {
+      sessionStorage.setItem('admin_authed', 'true')
+      setAuthed(true)
+    } else {
+      setError(true)
+      setPin('')
+    }
+  }
+
+  if (!authed) return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+      <div className="bg-white rounded-2xl p-8 max-w-sm w-full shadow-sm text-center">
+        <div className="text-3xl mb-4">🔒</div>
+        <h2 className="text-xl font-semibold text-gray-800 mb-6">Admin access</h2>
+        <input
+          type="password"
+          placeholder="Enter PIN"
+          value={pin}
+          onChange={e => { setPin(e.target.value); setError(false) }}
+          onKeyDown={e => e.key === 'Enter' && handlePin()}
+          className="w-full border border-gray-200 rounded-xl px-4 py-3 text-center text-lg tracking-widest focus:outline-none focus:border-pink-400 mb-3"
+        />
+        {error && <p className="text-red-400 text-sm mb-3">Incorrect PIN</p>}
+        <button
+          onClick={handlePin}
+          className="w-full bg-pink-400 hover:bg-pink-500 text-white font-semibold py-3 rounded-xl transition-all">
+          Enter
+        </button>
+      </div>
+    </div>
+  )
+
+  const [bookings, setBookings] = useState([])
   const fetchBookings = async () => {
     setLoading(true)
     const { data } = await supabase
