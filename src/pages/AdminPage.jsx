@@ -1,9 +1,6 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 
-import { useState, useEffect } from 'react'
-import { supabase } from '../lib/supabase'
-
 const ADMIN_PIN = import.meta.env.VITE_ADMIN_PIN
 
 const STATUS_COLORS = {
