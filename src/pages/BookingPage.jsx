@@ -5,7 +5,7 @@ const WORKING_HOURS = { start: 9, end: 18 }
 const BLOCKED_DAYS = [0, 1]
 
 const   BRAND = {
-  bg: '#f0ede8',
+  bg: '#F0F1EC',
   card: '#ffffff',
   sage: '#a8b89a',
   sageLight: '#e8ede5',
