@@ -143,43 +143,51 @@ export default function BookingPage() {
         <div className="text-center pt-10 pb-8">
           <img src="/laylalogo.jpg" alt="Beauty by Layla" className="w-44 mx-auto mb-4" />
         </div>
+{/* Policy modal */}
+{!policyAccepted && (
+  <div className="bg-white rounded-3xl shadow-sm overflow-hidden mb-6">
+    <div className="px-6 pt-6 pb-2">
+      <h2 className="text-base font-medium mb-4" style={{color: BRAND.text}}>Booking Policy</h2>
+      
+      <p className="text-sm leading-relaxed mb-4" style={{color: BRAND.muted}}>
+        Thank you for choosing BeautyByLayla. As a one-person business, I am committed to providing a professional and enjoyable experience. Please adhere to the following policies.
+      </p>
 
-        {/* Policy modal */}
-        {!policyAccepted && (
-          <div className="bg-white rounded-3xl shadow-sm overflow-hidden mb-6">
-            <div className="px-6 pt-6 pb-2">
-              <h2 className="text-base font-medium mb-4" style={{color: BRAND.text}}>Booking Policy</h2>
-              <div className="space-y-3 text-sm mb-5" style={{color: BRAND.muted}}>
-                {[
-                    ['Payment', 'Cash only. Please bring exact change.'],
-                    ['Refills', 'Refills over other artists\' nails or lash work are not offered.'],
-                    ['Punctuality', 'Late arrivals over 10 mins may result in a shortened service or rescheduling.'],
-                    ['Cancellations', '24 hours notice required for all cancellations.'],
-                    ['Confirmations', 'A confirmation text will be sent to you within 24 hours of your booking, if not please contact me.'],
-                    ['No-Shows', 'Clients who do not attend without notice will be unable to book future appointments.'],
-                    ['Patch Testing', 'Required for waxing and tinting services — please schedule in advance.'],
-                    ['Media Consent', 'Photos or videos taken during your appointment may be posted to social media. Please let me know if you do not consent.'],
-                    ['Location', 'Clondalkin, D22.'],
-                    ['Entry protocol', 'Please send a message when you are outside and i will come let you in.']
-                ].map(([title, text]) => (
-                  <div key={title} className="flex gap-3">
-                    <span className="font-medium shrink-0" style={{color: BRAND.text}}>{title}</span>
-                    <span>{text}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="px-6 pb-6">
-              <button
-                onClick={() => setPolicyAccepted(true)}
-                className="w-full py-3.5 rounded-2xl text-sm font-medium transition-all"
-                style={{background: BRAND.sage, color: '#fff'}}>
-                I understand — continue to booking
-              </button>
-            </div>
+      <div className="overflow-y-auto space-y-3 text-sm pr-1" style={{maxHeight: '280px', color: BRAND.muted}}>
+        {[
+          ['Payment', 'Cash only. Please bring exact change.'],
+          ['Refills', 'Refills over other artists\' nails or lash work are not offered.'],
+          ['Punctuality', 'Late arrivals over 10 mins may result in a shortened service or rescheduling.'],
+          ['Cancellations', '24 hours notice required for all cancellations.'],
+          ['Confirmations', 'A confirmation text will be sent to you within 24 hours of your booking. If not received, please contact me.'],
+          ['No-Shows', 'Clients who do not attend without notice will be unable to book future appointments.'],
+          ['Patch Testing', 'Required for waxing and tinting services — please schedule in advance.'],
+          ['Media Consent', 'Photos or videos taken during your appointment may be posted to social media. Please let me know if you do not consent.'],
+          ['Location', 'Clondalkin, D22.'],
+          ['Entry Protocol', 'Please send a message when you are outside and I will come to let you in.'],
+        ].map(([title, text]) => (
+          <div key={title} className="flex gap-3 pb-3" style={{borderBottom: `1px solid ${BRAND.border}`}}>
+            <span className="font-medium shrink-0 w-28" style={{color: BRAND.text}}>{title}</span>
+            <span className="leading-relaxed">{text}</span>
           </div>
-        )}
+        ))}
 
+        <p className="text-sm leading-relaxed pt-1 pb-2" style={{color: BRAND.muted}}>
+          I appreciate your cooperation in upholding these standards to ensure the best service. For any questions or to schedule an appointment, please contact me.
+        </p>
+      </div>
+    </div>
+
+    <div className="px-6 pb-6 pt-4">
+      <button
+        onClick={() => setPolicyAccepted(true)}
+        className="w-full py-3.5 rounded-2xl text-sm font-medium transition-all"
+        style={{background: BRAND.sage, color: '#fff'}}>
+        I understand — continue to booking
+      </button>
+    </div>
+  </div>
+)}
         {/* Booking steps */}
         {policyAccepted && (
           <>
