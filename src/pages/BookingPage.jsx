@@ -141,20 +141,24 @@ export default function BookingPage() {
 
         {/* Hero */}
         <div className="text-center pt-10 pb-8">
-          <img src="/laylalogo.jpg" alt="Beauty by Layla" className="w-44 mx-auto mb-4" />
         </div>
         
 {/* Policy modal */}
 {!policyAccepted && (
-  <div className="bg-white rounded-3xl shadow-sm overflow-hidden mb-6">
-    <div className="px-6 pt-6 pb-4">
+  <div className="rounded-3xl shadow-sm overflow-hidden mb-6 relative" style={{background: BRAND.card}}>
+    
+    {/* Watermark logo */}
+    <img src="/laylalogo.jpg" alt="" className="absolute opacity-5 pointer-events-none"
+      style={{width: '320px', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}} />
+
+    <div className="relative px-6 pt-6 pb-4">
       <h2 className="text-base font-medium mb-3" style={{color: BRAND.text}}>Booking Policy</h2>
 
       <p className="text-xs leading-relaxed mb-4" style={{color: BRAND.muted}}>
         Thank you for choosing BeautyByLayla. As a one-person business, I am committed to providing a professional and enjoyable experience. Please adhere to the following policies.
       </p>
 
-      <div className="space-y-2 text-xs mb-4" style={{color: BRAND.muted}}>
+      <div className="space-y-0 text-xs mb-4" style={{color: BRAND.muted}}>
         {[
           ['Payment', 'Cash only. Please bring exact change.'],
           ['Refills', 'Refills over other artists\' nails or lash work are not offered.'],
@@ -167,8 +171,8 @@ export default function BookingPage() {
           ['Location', 'Clondalkin, D22.'],
           ['Entry Protocol', 'Text when you arrive outside and I will come to let you in.'],
         ].map(([title, text]) => (
-          <div key={title} className="flex gap-2 py-2" style={{borderBottom: `1px solid ${BRAND.border}`}}>
-            <span className="font-semibold shrink-0 w-24" style={{color: BRAND.text}}>{title}</span>
+          <div key={title} className="flex gap-4 py-2.5" style={{borderBottom: `1px solid ${BRAND.border}`}}>
+            <span className="font-semibold shrink-0 w-28" style={{color: BRAND.text}}>{title}</span>
             <span className="leading-relaxed">{text}</span>
           </div>
         ))}
@@ -179,7 +183,7 @@ export default function BookingPage() {
       </p>
     </div>
 
-    <div className="px-6 pb-6">
+    <div className="relative px-6 pb-6">
       <button
         onClick={() => setPolicyAccepted(true)}
         className="w-full py-3.5 rounded-2xl text-sm font-medium transition-all"
