@@ -140,8 +140,28 @@ export default function BookingPage() {
       <div className="max-w-2xl mx-auto px-4 pb-12">
 
         {/* Hero */}
-        <div className="text-center pt-10 pb-8">
-        </div>
+<div className="mb-6 rounded-3xl overflow-hidden shadow-sm">
+  {/* Banner */}
+  <div className="relative h-40 flex items-end justify-start px-6 pb-0"
+    style={{background: 'linear-gradient(135deg, #a8b89a 0%, #c5d4bc 100%)'}}>
+    <img src="/laylalogo.jpg" alt="Beauty by Layla"
+      className="absolute top-4 right-4 w-16 opacity-20 pointer-events-none" />
+    {/* Profile photo overlapping banner */}
+    <div className="relative z-10 translate-y-10">
+      <img src="/profile.jpg" alt="Layla"
+        className="w-20 h-20 rounded-full object-cover object-top border-4 border-white shadow-md" />
+    </div>
+  </div>
+
+  {/* Bio section */}
+  <div className="bg-white px-6 pt-12 pb-6">
+    <h1 className="text-xl font-semibold mb-0.5" style={{color: BRAND.text}}>Layla Donegan</h1>
+    <p className="text-xs mb-3" style={{color: BRAND.sage}}>Beauty by Layla · Est. 2022</p>
+    <p className="text-sm leading-relaxed" style={{color: BRAND.muted}}>
+      Welcome to Beauty by Layla — makeup, nails, and all things beauty based in Clondalkin, Dublin. I specialise in nails, waxing, lashes, brows, makeup, and spray tans. Book your appointment below.
+    </p>
+  </div>
+</div>
         
 {/* Policy modal */}
 {!policyAccepted && (
